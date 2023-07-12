@@ -3,7 +3,10 @@ public class BankAccount {
     private String lastName;
     private String dateOfBirth;
     private int accountNumber;
-    private int balance;
+    private double balance;
+    private double interestRate;
+    private String accountType;
+    private int overdraft;
 
     public BankAccount(String firstName,String lastName, String dateOfBirth,int accountNumber){
         this.firstName = firstName;
@@ -11,6 +14,9 @@ public class BankAccount {
         this.dateOfBirth = dateOfBirth;
         this.accountNumber = accountNumber;
         this.balance = 0;
+        this.interestRate = 0;
+        this.accountType = "";
+        this.overdraft = 500;
     }
 
     public String getFirstName(){
@@ -25,7 +31,7 @@ public class BankAccount {
     public int getAccountNumber(){
         return this.accountNumber;
     }
-    public int getBalance(){
+    public double getBalance(){
         return this.balance;
     }
 
@@ -49,7 +55,24 @@ public class BankAccount {
     public void deposit(int depositAmount){
         this.balance += depositAmount;
     }
-    public void withdrawal(int withdrawalAmount){
-        this.balance -= withdrawalAmount;
+    public String withdrawal(int withdrawalAmount){
+        if (this.balance - withdrawalAmount >= - this.overdraft){
+            this.balance -= withdrawalAmount;
+            return "Withdrawal Successful!";
+        } else {
+            return "Cannot make Withdrawal. Insufficient Funds";
+        }
+    }
+
+    public void payInterest(String account){
+        if (account.equals("Saving")){
+            this.interestRate = 1.06;
+        } else if (account.equals("Current")){
+            this.interestRate = 1.03;
+        } else {
+//            This option has no interest added
+            this.interestRate = 1;
+        }
+        this.balance = this.balance * this.interestRate;
     }
 }

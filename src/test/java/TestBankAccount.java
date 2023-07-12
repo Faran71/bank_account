@@ -41,8 +41,8 @@ public class TestBankAccount {
 
     @Test
     public void canReturnBalance(){
-        int actual = bankAccount.getBalance();
-        int expected = 0;
+        double actual = bankAccount.getBalance();
+        double expected = 0;
         assertThat(actual).isEqualTo(expected);
     }
 
@@ -81,16 +81,50 @@ public class TestBankAccount {
     @Test
     public void canDepositMoney(){
         bankAccount.deposit(50);
-        int actual = bankAccount.getBalance();
-        int expected = 50;
+        double actual = bankAccount.getBalance();
+        double expected = 50;
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void canWithdrawalMoney(){
         bankAccount.withdrawal(50);
-        int actual = bankAccount.getBalance();
-        int expected = -50;
+        double actual = bankAccount.getBalance();
+        double expected = -50;
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void canApplyNoInterest(){
+        bankAccount.deposit(100);
+        bankAccount.payInterest("any other account");
+        double actual = bankAccount.getBalance();
+        double expected = 100;
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void canApplySavingInterest(){
+        bankAccount.deposit(100);
+        bankAccount.payInterest("Saving");
+        double actual = bankAccount.getBalance();
+        double expected = 106;
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void canApplyCurrentInterest(){
+        bankAccount.deposit(100);
+        bankAccount.payInterest("Current");
+        double actual = bankAccount.getBalance();
+        double expected = 103;
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void canApplyOverdraft(){
+        String actual = bankAccount.withdrawal(600);
+        String expected = "Cannot make Withdrawal. Insufficient Funds";
         assertThat(actual).isEqualTo(expected);
     }
 }
